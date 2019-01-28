@@ -8,17 +8,15 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        @auth
+        <meta name="api-token" content="{{ auth()->user()->api_token }}">
+        @endauth
+
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Styles -->
         <link href="{{asset('/css/app.css')}}" rel="stylesheet">
 
-        <!-- Scripts -->
-        <script>
-            window.Laravel = <?php echo json_encode([
-                'csrfToken' => csrf_token(),
-            ]); ?>
-        </script>
         <!-- Title -->
         <title>iisuStudio for Fun!</title>
 
@@ -33,12 +31,23 @@
 
     <!--  網頁內容 -->
     <div id="app">
-    @yield('content')
+
+    @include('shared/navbar')
+
+        <div class="container">
+
+            @include('shared/alerts')
+
+            @yield('content')
+
+        </div>
+
     </div>
 
     <!-- Scripts -->
     <script src="{{asset('/js/app.js')}}"></script>
 
     @yield('page-js')
+
     </body>
 </html>

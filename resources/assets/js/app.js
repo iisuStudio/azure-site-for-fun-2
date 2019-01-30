@@ -28,12 +28,13 @@ const app = new Vue({
     },
     methods: {
         addMessage(message) {
+            this.socket.emit('chat_message', message);
             axios.post('/chat_message', message).then(response => {
-                this.socket.emit('chat_message', message);
-                $('.inbox_chat').animate({
-                    scrollTop: $('.chat_log').height()
-                }, 2000);
+
             });
+            $('.inbox_chat').animate({
+                scrollTop: $('.chat_log').height()
+            }, 2000);
         },
         getMessage() {
             let self = this;

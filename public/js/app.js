@@ -6524,14 +6524,11 @@ var app = new Vue({
     },
     methods: {
         addMessage: function addMessage(message) {
-            var _this = this;
-
-            axios.post('/chat_message', message).then(function (response) {
-                _this.socket.emit('chat_message', message);
-                $('.inbox_chat').animate({
-                    scrollTop: $('.chat_log').height()
-                }, 2000);
-            });
+            this.socket.emit('chat_message', message);
+            axios.post('/chat_message', message).then(function (response) {});
+            $('.inbox_chat').animate({
+                scrollTop: $('.chat_log').height()
+            }, 2000);
         },
         getMessage: function getMessage() {
             var self = this;

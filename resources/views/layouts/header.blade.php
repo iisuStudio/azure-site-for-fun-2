@@ -12,9 +12,11 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
+                {{ link_to_route('home', config('app.name', 'Laravel'), [], ['class' => 'navbar-brand']) }}
+                {{ link_to_route('chat', 'Chatroom', [], ['class' => 'navbar-brand']) }}
+                {{--<a class="navbar-brand" href="{{ url('/') }}">--}}
+                    {{--{{ config('app.name', 'Laravel') }}--}}
+                {{--</a>--}}
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">

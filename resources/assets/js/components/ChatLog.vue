@@ -1,8 +1,10 @@
 <template lang="html">
-    <div class="chat-log">
-        <div class="chat-message" v-for="(message, index) in messages" :message="message">
-            <p>{{ message.message }}</p>
-            <small>{{ message.user }}</small>
+    <div class="chat_log">
+        <div class="chat_list" v-for="(message, index) in messages">
+            <div class="chat_ib" :message="message">
+                <h5>{{ message.user }} <span class="chat_date">Dec 25</span></h5>
+                <p>{{ message.message }}</p>
+            </div>
         </div>
     </div>
 </template>

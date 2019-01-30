@@ -23,7 +23,7 @@ Route::group(
     }
 );
 
-Route::get('/chat', 'View@chat');
+Route::get('/chat', 'View@chat')->name('chat');;
 
 Route::get('/chat_log', 'View@chat_log');
 

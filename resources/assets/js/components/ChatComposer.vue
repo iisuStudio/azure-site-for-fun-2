@@ -1,8 +1,10 @@
 <template lang="html">
-    <div class="chat-composer">
-        <input class='user' type="text" placeholder="暱稱" v-model="userName" @keyup.enter="sendMessage"/>
-        <input class='message' type="text" placeholder="請輸入文字..." v-model="messageText" @keyup.enter="sendMessage"/>
-        <button class="btn btn-primary" @click="sendMessage">Send</button>
+    <div class="type_msg">
+        <div class="input_msg_write">
+            <input type="text" class="write_msg user" placeholder="暱稱" v-model="userName" @keyup.enter="sendMessage"/>
+            <input type="text" class="write_msg message" placeholder="請輸入文字..." v-model="messageText" @keyup.enter="sendMessage"/>
+            <button class="msg_send_btn" type="button" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+        </div>
     </div>
 </template>
 

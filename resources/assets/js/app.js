@@ -6,8 +6,6 @@
  */
 
 require('./bootstrap');
-firebase = require('firebase');
-firebaseui = require('firebaseui');
 
 window.Vue = require('vue');
 
@@ -17,31 +15,49 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
-Vue.component('chat-message', require('./components/ChatMessage.vue'));
 Vue.component('chat-log', require('./components/ChatLog.vue'));
 Vue.component('chat-composer', require('./components/ChatComposer.vue'));
+
+import io from 'socket.io-client';
 
 const app = new Vue({
     el: '#app',
     data: {
-        messages: []
+        messages: [],
+        socket : io('https://iisustudio-socket-io-node.azurewebsites.net')
     },
     methods: {
         addMessage(message) {
-            this.messages.push(message);
-            setTimeout(function () {
-                window.anscrollTo(0,document.body.scrollHeight);
-            }, 500);
             axios.post('/chat_message', message).then(response => {
-
+                this.socket.emit('chat_message', message);
+                $('.inbox_chat').animate({
+                    scrollTop: $('.chat_log').height()
+                }, 2000);
+            });
+        },
+        getMessage() {
+            let self = this;
+            axios.get('/chat_log').then(response => {
+                console.log(response);
+                self.messages = response.data;
+                $('.inbox_chat').animate({
+                    scrollTop: $('.chat_log').height()
+                }, 2000);
             });
         }
     },
     created() {
-        axios.get('/chat_log').then(response => {
-            console.log(response);
-            this.messages = response.data;
+        this.getMessage();
+    },
+    mounted() {
+        let self = this;
+        this.socket.on('chat_message', (data) => {
+            console.log(data);
+            self.messages = [...self.messages, data];
+            // you can also do this.messages.push(data)
+            $('.inbox_chat').animate({
+                scrollTop: $('.chat_log').height()
+            }, 2000);
         });
     }
 });

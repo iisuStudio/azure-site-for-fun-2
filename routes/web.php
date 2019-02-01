@@ -23,10 +23,8 @@ Route::group(
     }
 );
 
-Route::get('/chat', 'View@chat')->name('chat');;
+Route::get('/chat', 'ChatWindow@chat')->name('chat');;
 
-Route::get('/chat_log', 'View@chat_log');
+Route::get('/chat_log', 'ChatWindow@chat_log');
 
-Route::post('/chat_message', 'View@chat_message');
-
-Route::get('/session', 'Session@fire');
+Route::post('/chat_message', 'ChatWindow@chat_message');

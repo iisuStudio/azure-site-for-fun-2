@@ -42,6 +42,8 @@
 
         </div>
 
+        <chat-popup-window></chat-popup-window>
+
     </div>
 
     <!-- Scripts -->

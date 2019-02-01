@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Services;
 
-use App\Http\Controllers\Controller;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
-class FirebaseController extends Controller
+class FirebaseService
 {
     protected $firebase;
-    protected $reference = 'blog';
-    protected $reference_root = 'blog';
+    protected $reference = '';
+    protected $reference_root = '';
 
     public function __construct()
     {
@@ -18,10 +17,6 @@ class FirebaseController extends Controller
         $this->firebase = (new Factory)
             ->withServiceAccount($serviceAccount)
             ->create();
-    }
-
-    public function index(){
-        return 1;
     }
 
     public function getDatabase(){

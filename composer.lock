@@ -4,8 +4,72 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "025ee947b8447cb15265694659fb0b81",
+    "content-hash": "dbb7beba8d1df9ddd26756c01928391f",
     "packages": [
+        {
+            "name": "bepsvpt/secure-headers",
+            "version": "5.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BePsvPT/secure-headers.git",
+                "reference": "f45d2c216b85a89c41312449542c47e94a35bff8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BePsvPT/secure-headers/zipball/f45d2c216b85a89c41312449542c47e94a35bff8",
+                "reference": "f45d2c216b85a89c41312449542c47e94a35bff8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.1",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "ext-xdebug": "*",
+                "orchestra/testbench": "~3.1",
+                "phpstan/phpstan": "~0.7",
+                "phpunit/phpunit": "~5.7|~6.5|~7.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Bepsvpt\\SecureHeaders\\SecureHeadersServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bepsvpt\\SecureHeaders\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "BePsvPT",
+                    "email": "bepsvpt@protonmail.com"
+                }
+            ],
+            "description": "Add security related headers to HTTP response. The package includes Service Providers for easy Laravel integration.",
+            "homepage": "https://github.com/BePsvPT/secure-headers",
+            "keywords": [
+                "clear-site-data",
+                "content-security-policy",
+                "csp",
+                "except-ct",
+                "feature-policy",
+                "header",
+                "hpkp",
+                "hsts",
+                "https",
+                "laravel",
+                "referrer-policy"
+            ],
+            "time": "2019-02-28T03:15:34+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",

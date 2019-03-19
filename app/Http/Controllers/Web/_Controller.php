@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Services\MachineService;
 
 class _Controller extends Controller
 {
+    protected $machine_service;
+
     //CONFIGURATION for SmartAdmin UI
 
     //ribbon breadcrumbs config
@@ -44,6 +47,10 @@ class _Controller extends Controller
 
     public function __construct ()
     {
+        $this->machine_service = new MachineService();
+        View()->share('_machine_service', $this->machine_service);
+        View()->share('_memory_usage', $this->machine_service->getServerMemoryUsage(true));
+
         View()->share('breadcrumbs', $this->breadcrumbs);
         View()->share('page_nav', $this->page_nav);
         View()->share('page_title', $this->page_title);

@@ -30,7 +30,7 @@ Route::get('/chat_log', 'ChatWindow@chat_log');
 Route::post('/chat_message', 'ChatWindow@chat_message');
 
 Route::group(
-    [ 'namespace' => 'Web' ],
+    [ 'middleware' => 'auth:web', 'namespace' => 'Web' ],
     function () {
         Route::get('/web', 'IndexController@index');
 

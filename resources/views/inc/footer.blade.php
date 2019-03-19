@@ -35,7 +35,18 @@
 							<div class="padding-5">
 								<p class="txt-color-darken font-sm no-margin">Memory Load <span class="text-danger">*critical*</span></p>
 								<div class="progress progress-micro no-margin">
-									<div class="progress-bar progress-bar-danger" style="width: 70%;"></div>
+									<div class="progress-bar
+									@if($_memory_usage <= 30)
+											progress-bar-success
+									@elseif($_memory_usage > 30 && $_memory_usage <= 70)
+											progress-bar-warning
+									@else
+											progress-bar-danger
+									@endif
+									"
+										 style="width: {{$_memory_usage}}%;"
+									>
+									</div>
 								</div>
 							</div>
 						</li>

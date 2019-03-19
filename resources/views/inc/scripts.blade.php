@@ -59,6 +59,12 @@
 		<![endif]-->
 
 		<!-- MAIN APP JS FILE -->
-		<script src="{{ asset('/js/app.js') }}"></script>
+		{{--<script src="{{ asset('/js/app.js') }}"></script>--}}
+		<script src="{{ asset('/js/app-smart.js') }}"></script>
+
+		<script type="text/javascript">
+            // DO NOT REMOVE : GLOBAL FUNCTIONS!
+            pageSetUp();
+		</script>
 
 

@@ -28,4 +28,13 @@ class User extends Authenticatable implements MustVerifyEmailContract
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * The User has an info
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     */
+    public function info ()
+    {
+        return $this->hasOne( UserInfo::class, 'user_id', 'id' );
+    }
 }

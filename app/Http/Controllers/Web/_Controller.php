@@ -9,6 +9,9 @@ class _Controller extends Controller
 {
     protected $machine_service;
 
+    public $view;
+    public $rtndata;
+
     //CONFIGURATION for SmartAdmin UI
 
     //ribbon breadcrumbs config

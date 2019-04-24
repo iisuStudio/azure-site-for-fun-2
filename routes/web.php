@@ -30,22 +30,37 @@ Route::get('/chat_log', 'ChatWindow@chat_log');
 Route::post('/chat_message', 'ChatWindow@chat_message');
 
 Route::group(
-    [ 'middleware' => 'auth:web', 'namespace' => 'Web' ],
+    [
+        'middleware' => 'auth:web',
+        'namespace' => 'Web',
+        'prefix' => 'web'
+    ],
     function () {
-        Route::get('/web', 'IndexController@index');
+        Route::get('/', 'IndexController@index');
 
-        Route::get('/web/datatable', 'IndexController@datatable');
+        Route::get('/datatable', 'IndexController@datatable');
 
-        Route::get('/web/calendar', 'IndexController@calendar');
+        Route::get('/calendar', 'IndexController@calendar');
 
-        Route::get('/web/gallery', 'IndexController@gallery');
+        Route::get('/gallery', 'IndexController@gallery');
 
-        Route::get('/web/gmap-xml', 'IndexController@gmap_xml');
+        Route::get('/gmap-xml', 'IndexController@gmap_xml');
 
-        Route::get('/web/inbox', 'IndexController@inbox');
+        Route::get('/inbox', 'IndexController@inbox');
 
-        Route::get('/web/invoice', 'IndexController@invoice');
+        Route::get('/invoice', 'IndexController@invoice');
 
-        Route::get('/web/profile', 'IndexController@profile');
+        Route::get('/profile', 'IndexController@profile');
+
+        Route::group(
+            [
+                'namespace' => 'Member',
+                'prefix' => 'member'
+            ],
+            function () {
+                Route::get('/user', 'UserController@index');
+                Route::get('/user/getlist', 'UserController@getList');
+            }
+        );
     }
 );

@@ -11,6 +11,7 @@ class _Controller extends Controller
 
     public $view;
     public $rtndata;
+    public $field;
 
     //CONFIGURATION for SmartAdmin UI
 
@@ -61,5 +62,87 @@ class _Controller extends Controller
         View()->share('no_main_header', $this->no_main_header);
         View()->share('page_body_prop', $this->page_body_prop);
         View()->share('page_html_prop', $this->page_html_prop);
+
+        $this->__init_field();
+        View()->share( 'field', json_decode( json_encode( $this->field ) ) );
+    }
+
+    public function __init_field ()
+    {
+        $this->field = [
+            'get' => [
+
+            ],
+            'add' => [
+
+            ],
+            'edit' => [
+
+            ]
+        ];
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder mixed
+     */
+    public function __init_datatable_query ( $query )
+    {
+        $this->__init_field();
+        $sort_arr = [];
+        $search_arr = [];
+        $search_word = request()->input( 'sSearch' );
+        $column_arr = array_filter( explode( ',', request()->input( 'sColumns' ) ) );
+        foreach ($column_arr as $key => $item) {
+            if (request()->input( 'bSearchable_' . $key ) == "true") {
+                $search_arr[$key] = explode( '.', $item );
+            }
+            if (request()->input( 'bSortable_' . $key ) == "true") {
+                $sort_arr[$key] = $item;
+            }
+        }
+        $sort_name = $sort_arr[request()->input( 'iSortCol_0' )];
+        $sort_dir = request()->input( 'sSortDir_0' );
+        $field_value = [];
+        $field_array = [];
+        $nested_sort_table = '';
+        $nested_sort_local_key = '';
+        $nested_sort_foreign_key = '';
+        foreach ($this->field['get'] as $column) {
+            if (key_exists( 'name', $column ) && key_exists( 'data', $column )) {
+                $field_array[$column['name']] = $column['data'];
+                if (count( explode( '.', $column['name'] ) ) > 1 && $column['name'] == $sort_name) {
+                    $nested_sort_table = $column['table'] ?? '';
+                    $nested_sort_local_key = $column['localKey'] ?? '';
+                    $nested_sort_foreign_key = $column['foreignKey'] ?? '';
+                }
+                if (count( explode( '.', $column['name'] ) ) == 1) array_push( $field_value, $column['data'] . ' as ' . $column['name'] );
+                if ($column['name'] == $sort_name) array_push( $field_value, $column['data'] . ' as ' . 'sorting' );
+            }
+        }
+        // search
+        $query->where( function ( \Illuminate\Database\Eloquent\Builder $query ) use ( $search_arr, $search_word, $field_array ) {
+            foreach ($search_arr as $search_item) {
+                $target_column = $field_array[implode( '.', $search_item )];
+                $nested_column = array_pop( $search_item );
+                $sub_query_model = $query->getModel();
+                foreach ($search_item as $relation) {
+                    if ( !is_object( $sub_query_model )) break;
+                    $sub_query_model = method_exists( $sub_query_model, $relation ) ? $sub_query_model->$relation() : null;
+                }
+                if ($sub_query_model && $sub_query_model->getModel()->getTable() !== $query->getModel()->getTable()) {
+                    $query->orWhereHas( implode( '.', $search_item ), function ( \Illuminate\Database\Eloquent\Builder $sub_query ) use ( $nested_column, $search_word ) {
+                        $sub_query->where( $nested_column, 'like', '%' . $search_word . '%' );
+                    } );
+                } elseif (count( $search_item ) == 0) {
+                    $query->orWhere( $target_column, 'like', '%' . $search_word . '%' );
+                }
+            }
+        } );
+        // Sorting
+        if ($nested_sort_table && !array_has( array_pluck( $query->getQuery()->joins ?? [], 'table' ), $nested_sort_table )) $query->leftjoin( $nested_sort_table, $nested_sort_local_key, '=', $nested_sort_foreign_key );
+        //
+        return $query->select( $field_value )->orderBy( 'sorting', $sort_dir );
     }
 }

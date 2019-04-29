@@ -88,6 +88,16 @@
                                     {{--<th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Zip</th>--}}
                                     {{--<th data-hide="phone,tablet">City</th>--}}
                                     {{--<th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> Date</th>--}}
+                                    @foreach($field->get as $column)
+                                        @if(isset($column->title))
+                                            <th
+                                                    @if(isset($column->dt_class)) data-class="{{$column->dt_class}}" @endif
+                                            @if(isset($column->dt_hide)) data-hide="{{$column->dt_hide}}" @endif
+                                            >
+                                                {{$column->title}}
+                                            </th>
+                                        @endif
+                                    @endforeach
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -165,18 +175,37 @@
 
             var ajax_source = "{{ url('web/'.implode( '/', $module ).'/getlist')}}";
             var ajax_Table = "{{ url('web/'.implode( '/', $module ).'/getlist')}}";
+
+            var table_columns = [
+                    @foreach($field->get as $column)
+                {
+                    @if(isset($column->title))
+                    "sTitle": "{{$column->title}}",
+                    @endif
+                            @if(isset($column->name))
+                    "sName": "{{$column->name}}",
+                    @endif
+                            @if(isset($column->data))
+                    "mData": "{{$column->name}}",
+                    @endif
+                            @if(isset($column->width))
+                    "sWidth": "{{$column->width}}",
+                    @endif
+                            @if(isset($column->visible) && $column->visible == false)
+                    "bVisible": false,
+                    @endif
+                            @if(isset($column->bSortable) && $column->bSortable == false)
+                    "bSortable": false,
+                    @endif
+                            @if(isset($column->bSearchable) && $column->bSearchable == false)
+                    "bSearchable": false,
+                    @endif
+                },
+                @endforeach
+            ];
             $('#dt_basic').DataTable({
                 "serverSide": true,
-                "aoColumns": [
-                    @foreach($exportColumns as $column)
-                    {
-                        "sTitle": "{{$column->title}}",
-                        "mData": "{{$column->name}}",
-                        "sName": "{{$column->name}}",
-                        "bSortable": "@if(count(explode('.', $column->name))==1 || $column->table){{"true"}}@endif"
-                    },
-                    @endforeach
-                ],
+                "aoColumns": table_columns,
                 "sAjaxSource": ajax_source,
                 "ajax": ajax_Table,
                 "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
@@ -199,7 +228,11 @@
                     responsiveHelper_dt_basic.respond();
                 }
             });
-
+            function getColumnIndexByName(name) {
+                return $.map(table_columns, function(item, index) {
+                    return item.sName
+                }).indexOf(name);
+            }
             /* END BASIC */
         })
 

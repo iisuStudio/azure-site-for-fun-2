@@ -9,11 +9,13 @@
         "bepsvpt/secure-headers": "^5.3",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "~4.0",
+        "geoip2/geoip2": "~2.0",
         "kreait/firebase-php": "^4.0",
         "laravel/framework": "5.7.*",
         "laravel/socialite": "^4.0",
         "laravel/tinker": "~1.0",
-        "laravelcollective/html": "^5.7"
+        "laravelcollective/html": "^5.7",
+        "pragmarx/tracker": "^3.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

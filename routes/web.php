@@ -64,3 +64,14 @@ Route::group(
         );
     }
 );
+
+Route::group(
+    [
+        'namespace' => 'Status',
+        'prefix' => 'status'
+    ],
+    function () {
+        Route::get('/', 'IndexController@index');
+        Route::get('/visits', 'IndexController@visits');
+    }
+);

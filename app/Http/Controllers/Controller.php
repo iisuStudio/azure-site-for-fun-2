@@ -10,4 +10,14 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * @var \PragmaRX\Tracker\Tracker
+     */
+    protected $tracker;
+
+    public function __construct ()
+    {
+        $this->tracker = app('tracker');
+    }
 }

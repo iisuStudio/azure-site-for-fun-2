@@ -81,14 +81,14 @@ return [
     /*
      * Log artisan commands?
      */
-    'console_log_enabled' => true,
+    'console_log_enabled' => false,
 
     /*
      * Log SQL queries?
      *
      * Log must be enabled for this option to work.
      */
-    'log_sql_queries' => true,
+    'log_sql_queries' => false,
 
     /*
      * If you prefer to store Tracker data on a different database or connection,

@@ -23,8 +23,9 @@ class AddAgentNameHash extends Migration
             $this->builder->table(
                 $this->table,
                 function ($table) {
+                    if(Schema::hasColumn( $this->table, 'tracker_agents_name_hash_unique' ))
                     $table->dropUnique('tracker_agents_name_hash_unique');
-
+                    if(Schema::hasColumn( $this->table, 'name_hash' ))
                     $table->dropColumn('name_hash');
                 }
             );

@@ -14,7 +14,7 @@ class UpdateEmailAndPasswordToNullableToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('email')->nullable()->change();
+//            $table->string('email')->nullable()->change();
             $table->string('password')->nullable()->change();
         });
     }
@@ -27,8 +27,8 @@ class UpdateEmailAndPasswordToNullableToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('email')->nullable(false)->change();
-            $table->string('password')->nullable(false)->change();
+//            $table->string('email')->nullable(false)->change();
+//            $table->string('password')->nullable(false)->change();
         });
     }
 }

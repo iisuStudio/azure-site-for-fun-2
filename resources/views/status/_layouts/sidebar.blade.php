@@ -25,6 +25,12 @@
             <span>Visits</span></a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{url('status/errors')}}">
+            <i class="fas fa-fw fa-bug"></i>
+            <span>Errors</span></a>
+    </li>
+
     {{--<!-- Divider -->--}}
     {{--<hr class="sidebar-divider">--}}
 

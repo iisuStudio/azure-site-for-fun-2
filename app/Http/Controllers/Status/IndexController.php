@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Status;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class IndexController extends _Controller
 {
     function index ()
@@ -18,7 +20,27 @@ class IndexController extends _Controller
 
     function visits ()
     {
-
         return View()->make( 'status.visits' )->with(['field'=>$this->tracker->sessions(60 * 24)]);
+    }
+
+    function errors ()
+    {
+        $logs = $this->tracker->errors( 60 * 24 * 7 );
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+
+        $logs = array_reverse(array_sort($logs , function ($value) {
+            return $value['created_at'];
+        }));
+        $currentItems = array_slice($logs, $perPage * ($currentPage - 1), $perPage);
+
+        $logs = new LengthAwarePaginator($currentItems, count($logs), $perPage, $currentPage, [
+            'path' => url('status/errors')
+        ]);
+
+        return View()->make( 'status.errors' )->with([
+            'logs' => $logs
+        ]);
     }
 }

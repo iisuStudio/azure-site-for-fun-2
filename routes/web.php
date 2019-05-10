@@ -73,5 +73,6 @@ Route::group(
     function () {
         Route::get('/', 'IndexController@index');
         Route::get('/visits', 'IndexController@visits');
+        Route::get('/errors', 'IndexController@errors');
     }
 );

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use PragmaRX\Tracker\Support\Migration;
 
 class AddTrackerRefererColumnToLog extends Migration
@@ -33,11 +34,24 @@ class AddTrackerRefererColumnToLog extends Migration
      */
     public function migrateDown()
     {
-        $this->builder->table(
-            $this->table,
-            function ($table) {
-                $table->dropColumn('referer_id');
-            }
-        );
+//        $this->builder->table(
+//            $this->table,
+//            function ($table) {
+//                $table->dropColumn('referer_id');
+//            }
+//        );
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table($this->table, function (Blueprint $table) {
+            $table->dropIndex('tracker_log_referer_id_index');
+            $table->dropColumn('referer_id');
+        });
     }
 }

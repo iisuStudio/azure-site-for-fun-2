@@ -76,6 +76,10 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
+            'options' => extension_loaded('pdo_sqlsrv') ? array_filter([
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE => true
+            ]) : []
         ],
 
     ],

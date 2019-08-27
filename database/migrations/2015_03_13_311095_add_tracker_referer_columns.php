@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use PragmaRX\Tracker\Support\Migration;
 
 class AddTrackerRefererColumns extends Migration
@@ -45,20 +46,41 @@ class AddTrackerRefererColumns extends Migration
      */
     public function migrateDown()
     {
-        $this->builder->table(
-            $this->table,
-            function ($table) {
-                $table->dropColumn('medium');
-                $table->dropColumn('source');
-                $table->dropColumn('search_terms_hash');
-            }
-        );
+//        $this->builder->table(
+//            $this->table,
+//            function ($table) {
+//                $table->dropColumn('medium');
+//                $table->dropColumn('source');
+//                $table->dropColumn('search_terms_hash');
+//            }
+//        );
+//
+//        $this->builder->table(
+//            $this->foreign,
+//            function ($table) {
+//                $table->dropForeign('tracker_referers_referer_id_fk');
+//            }
+//        );
+    }
 
-        $this->builder->table(
-            $this->foreign,
-            function ($table) {
-                $table->dropForeign('tracker_referers_referer_id_fk');
-            }
-        );
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table($this->table, function (Blueprint $table) {
+            $table->dropIndex( 'tracker_referers_medium_index');
+            $table->dropIndex( 'tracker_referers_source_index');
+            $table->dropIndex( 'tracker_referers_search_terms_hash_index');
+            $table->dropColumn('medium');
+            $table->dropColumn('source');
+            $table->dropColumn('search_terms_hash');
+        });
+
+        Schema::table($this->foreign, function (Blueprint $table) {
+            $table->dropForeign('tracker_referers_referer_id_fk');
+        });
     }
 }

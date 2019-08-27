@@ -118,7 +118,10 @@ class _Controller extends Controller
                     $nested_sort_foreign_key = $column['foreignKey'] ?? '';
                 }
                 if (count( explode( '.', $column['name'] ) ) == 1) array_push( $field_value, $column['data'] . ' as ' . $column['name'] );
-                if ($column['name'] == $sort_name) array_push( $field_value, $column['data'] . ' as ' . 'sorting' );
+                if ($column['name'] == $sort_name) {
+                    //array_push( $field_value, $column['data'] . ' as ' . 'sorting' );
+                    $sort_name = $column['data'];
+                }
             }
         }
         // search
@@ -127,9 +130,17 @@ class _Controller extends Controller
                 $target_column = $field_array[implode( '.', $search_item )];
                 $nested_column = array_pop( $search_item );
                 $sub_query_model = $query->getModel();
-                foreach ($search_item as $relation) {
+                foreach ($search_item as $relationKey => $relation) {
                     if ( !is_object( $sub_query_model )) break;
-                    $sub_query_model = method_exists( $sub_query_model, $relation ) ? $sub_query_model->$relation() : null;
+                    if(method_exists( $sub_query_model, $relation ) && ($relationKey == count($search_item)-1)){
+                        $sub_query_model = $sub_query_model->$relation();
+                    }
+                    else if(method_exists( $sub_query_model, $relation )){
+                        $sub_query_model = $sub_query_model->$relation()->getModel();
+                    }
+                    else{
+                        $sub_query_model = null;
+                    }
                 }
                 if ($sub_query_model && $sub_query_model->getModel()->getTable() !== $query->getModel()->getTable()) {
                     $query->orWhereHas( implode( '.', $search_item ), function ( \Illuminate\Database\Eloquent\Builder $sub_query ) use ( $nested_column, $search_word ) {
@@ -141,8 +152,11 @@ class _Controller extends Controller
             }
         } );
         // Sorting
-        if ($nested_sort_table && !array_has( array_pluck( $query->getQuery()->joins ?? [], 'table' ), $nested_sort_table )) $query->leftjoin( $nested_sort_table, $nested_sort_local_key, '=', $nested_sort_foreign_key );
+        if ($nested_sort_table && !array_has( array_pluck( $query->getQuery()->joins ?? [], 'table' ), $nested_sort_table )) {
+            $query->leftjoin( $nested_sort_table, $query->getModel()->getTable() . '.' . $nested_sort_local_key, '=', $nested_sort_table . '.' . $nested_sort_foreign_key );
+        }
         //
-        return $query->select( $field_value )->orderBy( 'sorting', $sort_dir );
+        //return $query->select( $field_value )->orderBy( 'sorting', $sort_dir );
+        return $query->select( $field_value )->orderBy( $sort_name, $sort_dir );
     }
 }

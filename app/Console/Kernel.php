@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\CronJobDaemon::class,
 
         \App\Console\Commands\MailTest::class,
+        \App\Console\Commands\NotifyTest::class,
     ];
 
     /**
@@ -29,6 +30,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command( 'cronjob:notify_test' )->daily();
     }
 
     /**

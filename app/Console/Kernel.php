@@ -13,7 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\CronJobTest::class,
+        \App\Console\Commands\CronJobDaemon::class,
+
+        \App\Console\Commands\MailTest::class,
     ];
 
     /**

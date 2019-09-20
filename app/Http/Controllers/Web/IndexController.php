@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 
+use Alkhachatryan\LaravelWebConsole\LaravelWebConsole;
+
 class IndexController extends _Controller
 {
     function index ()
@@ -42,5 +44,9 @@ class IndexController extends _Controller
     function profile ()
     {
         return View()->make( 'web.profile' );
+    }
+
+    function console() {
+        return LaravelWebConsole::show();
     }
 }

@@ -38,6 +38,8 @@ Route::group(
     function () {
         Route::get('/', 'IndexController@index');
 
+        Route::get('/console', 'IndexController@console');
+
         Route::get('/datatable', 'IndexController@datatable');
 
         Route::get('/calendar', 'IndexController@calendar');

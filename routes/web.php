@@ -31,7 +31,7 @@ Route::post('/chat_message', 'ChatWindow@chat_message');
 
 Route::group(
     [
-        'middleware' => 'auth:web',
+//        'middleware' => 'auth:web',
         'namespace' => 'Web',
         'prefix' => 'web'
     ],
@@ -64,17 +64,5 @@ Route::group(
                 Route::get('/user/getlist', 'UserController@getList');
             }
         );
-    }
-);
-
-Route::group(
-    [
-        'namespace' => 'Status',
-        'prefix' => 'status'
-    ],
-    function () {
-        Route::get('/', 'IndexController@index');
-        Route::get('/visits', 'IndexController@visits');
-        Route::get('/errors', 'IndexController@errors');
     }
 );
